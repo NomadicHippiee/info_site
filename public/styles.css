@@ -1,3 +1,10 @@
+:root {
+  --color-bg-primary: rgb(234 189 168 / 0.3);
+  --color-bg-secundary: grey;
+  --color-bg-accent:  rgb(0 128 0 / 0.7);;
+  ;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -15,6 +22,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-size: 16px;
+  background-color: var(--color-bg-primary);
 }
 
 header {
@@ -25,10 +33,33 @@ header {
   align-items: center;
   padding: 15px;
   font-size: 1.5rem;
+  background-color: var(--color-bg-secundary);
+  gap: 50px;
 }
 
 header h3 {
-    font-size: 2rem;
+    font-size: 3rem;
+    color: var(--color-bg-primary);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  min-width: 300px;
+
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+
+}
+
+nav a:hover {
+  text-decoration: underline;
+  color: var(--color-bg-accent);
+  text-underline-offset: 4px; 
+  text-decoration-thickness: 2px; 
 }
 
 main {
@@ -46,6 +77,8 @@ main {
     min-width: 400px;
     justify-content: center;
     align-items: center;
+    flex: 1;
+    padding: 15px;
 }
 
 .dashboard-container {
@@ -56,9 +89,10 @@ main {
 }
 
 .dashboard-section {
-    border: 1px solid green;
+    border: 1px solid #008000;
     width: 100%;
     padding: 15px;
+    background-color: var(--color-bg-accent);
 }
 
 .section-container {
@@ -78,6 +112,13 @@ footer {
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  background-color: var(--color-bg-secundary);
+  color: white;
+}
+
+footer a {
+  text-decoration: none;
+  color: white;
 }
 
 footer .copy {
