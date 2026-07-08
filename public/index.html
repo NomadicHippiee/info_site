@@ -1,57 +1,78 @@
-<h1>Welcome Home</h1>
-<p>This is the home page</p>
+<div class="hero">
+  <h1>Welcome Home</h1>
+  <p>This is the home page</p>
+  <div id="loading" class="location-info">Getting your location..</div>
+  <div id="location-info" class="location-info" style="display: none">
+    <p>Your Location: <span id="location-address"></span></p>
+    <p>Coordinates: <span id="location-coords"></span></p>
+  </div>
+  <section id="weather-section" class="dashboard-weather" style="display: none">
+    <h2>Current Weather</h2>
+    <p>Temperature: <strong id="weather-temp">--</strong></p>
+  </section>
+  <div id="weather-error" class="dashboard-section error" style="display: none">
+    <p>Weather data unavailable</p>
+  </div>
+</div>
 <div id="dashboard" class="dashboard-container">
-    <div id="loading" class="location-info">Getting your location..</div>
-    <div id="location-info" class="location-info" style="display: none;">
-  <p>Your Location: <span id="location-address"></span></p>
-  <p>
-    Coordinates: <span id="location-coords"></span>
-  </p>
-    </div>
-
-    <section id="weather-section" class="dashboard-section" style="display: none;">
-        <h2>Current Weather</h2>
-        <p>Temperature: <strong id="weather-temp">--</strong></p>
+  <div class="section-container">
+    <section
+      id="trivia-section"
+      class="dashboard-section"
+      style="display: none"
+    >
+      <h2>Trivia Question</h2>
+      <p id="trivia-question">--</p>
+      <p>Difficulty: <span id="trivia-difficulty">--</span></p>
+      <details>
+        <summary>Click for answer</summary>
+        <p><strong>Correct:</strong> <span id="trivia-correct">--</span></p>
+        <p><strong>Wrong oprions</strong></p>
+        <ul id="trivia-incorrect">
+          <li>--</li>
+        </ul>
+      </details>
     </section>
-    <div id="weather-error" class="dashboard-section error" style="display: none;">
-        <p>Weather data unavailable</p>
+    <div
+      id="trivia-error"
+      class="dashboard-section error"
+      style="display: none"
+    >
+      <p>Trivia unavailable</p>
     </div>
 
-    <section id="trivia-section" class="dashboard-section" style="display: none;">
-        <h2>Trivia Question</h2>
-        <p id="trivia-question">--</p>
-        <p>Difficulty: <span id="trivia-difficulty">--</span></p>
-        <details>
-            <summary>Click for answer</summary>
-            <p><strong>Correct:</strong> <span id="trivia-correct">--</span></p>
-            <p><strong>Wrong oprions</strong></p>
-            <ul id="trivia-incorrect">
-                <li>--</li>
-            </ul>
-        </details>
+    <section
+      id="fun-fact-section"
+      class="dashboard-section"
+      style="display: none"
+    >
+      <h2>Fun Fact:</h2>
+      <p id="fun-fact">--</p>
     </section>
-   <div id="trivia-error" class="dashboard-section error" style="display: none;">
-        <p>Trivia unavailable</p>
+    <div
+      id="fun-fact-error"
+      class="dashboard-section error"
+      style="display: none"
+    >
+      <p>Fun fact unavailable</p>
     </div>
 
-    <section id="fun-fact-section" class="dashboard-section" style="display: none;">
-        <h2>Fun Fact:</h2>
-        <p id="fun-fact">--</p>
+    <section
+      id="cat-fact-section"
+      class="dashboard-section"
+      style="display: none"
+    >
+      <h2>Cat Fact</h2>
+      <p id="cat-fact">--</p>
     </section>
-    <div id="fun-fact-error" class="dashboard-section error" style="display: none;">
-        <p>Fun fact unavailable</p>
+    <div
+      id="cat-fact-error"
+      class="dashboard-section error"
+      style="display: none"
+    >
+      <p>Cat fact unavailable</p>
     </div>
-
-    <section id="cat-fact-section" class="dashboard-section" style="display: none;">
-        <h2>Cat Fact</h2>
-        <p id="cat-fact">--</p>
-    </section>
-    <div id="cat-fact-error" class="dashboard-section error" style="display: none;">
-        <p>Cat fact unavailable</p>
-    </div>
-
-
-
+  </div>
 </div>
 
 <script src="/dashboard.js"></script>

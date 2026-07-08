@@ -1,0 +1,92 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  min-width: 400px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-size: 16px;
+}
+
+header {
+  height: 100px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  font-size: 1.5rem;
+}
+
+header h3 {
+    font-size: 2rem;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 400px;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-section {
+    border: 1px solid green;
+    width: 100%;
+    padding: 15px;
+}
+
+.section-container {
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  padding: 15px;
+  align-self: flex-end;
+
+  
+}
+
+footer {
+  height: 50px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+
+footer .copy {
+    font-size: 0.8rem;
+}
+
+@media (max-width: 599px) {
+    .section-container {
+        flex-wrap: wrap;
+        min-width: 400px;
+    }
+}
