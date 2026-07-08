@@ -46,6 +46,14 @@ async function initializeDashboard() {
     document.getElementById("location-coords").textContent =
       `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
 
+    if (data.location.address) {
+      document.getElementById("location-address").textContent =
+        data.location.address;
+    } else {
+      document.getElementById("location-address").textContent =
+        `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`;
+    }
+
     document.getElementById("location-info").style.display = "block";
 
     if (data.weather.status === "fulfilled") {
@@ -67,7 +75,7 @@ async function initializeDashboard() {
       const incorrectList = document.getElementById("trivia-incorrect");
       incorrectList.innerHTML = trivia.incorrect_answers
         .map((ans) => `<li>${ans}</li>`)
-        .join('');
+        .join("");
 
       document.getElementById("trivia-section").style.display = "block";
     } else {

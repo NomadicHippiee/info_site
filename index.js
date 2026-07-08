@@ -1,4 +1,3 @@
-
 import { readFile } from "node:fs/promises";
 import { createServer } from "node:http";
 
@@ -7,7 +6,12 @@ async function fetchWithTimeout(url, timeoutMs = 5000) {
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "InfoSite/1.0 (Learning Project)",
+      },
+    });
     return await response.json();
   } catch (err) {
     throw new Error(`API error: ${err.message}`);
@@ -52,14 +56,25 @@ async function handleDashboardAPI(req, res) {
         5000,
       ),
       fetchWithTimeout(
-    'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en',
-    5000
-),
-      fetchWithTimeout("https://catfact.ninja/random", 5000),
+        "https://uselessfacts.jsph.pl/api/v2/facts/random?language=en",
+        5000,
+      ),
+      fetchWithTimeout("https://catfact.ninja/fact", 5000),
+      fetchWithTimeout(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+        5000,
+      ),
     ]);
 
     const response = {
-      location: { latitude: lat, longitude: lon },
+      location: {
+        latitude: lat,
+        longitude: lon,
+        address:
+          results[4].status === "fulfilled"
+            ? `${results[4].value.address.town || results[4].value.address.city || results[4].value.address.village}, ${results[4].value.address.country}`
+            : null,
+      },
       weather: {
         data:
           results[0].status === "fulfilled" ? results[0].value.current : null,
@@ -96,6 +111,7 @@ const routes = {
   "/": "./public/index.html",
   "/about": "./public/about.html",
   "/contact-me": "./public/contact-me.html",
+  "/dashboard.js": "./public/dashboard.js",
 };
 
 async function buildPage(pagePath) {
@@ -110,10 +126,26 @@ async function buildPage(pagePath) {
 }
 
 async function handleRequest(req, res) {
+  if (req.url.startsWith("/api/dashboard")) {
+    return handleDashboardAPI(req, res);
+  }
 
-    if (req.url.startsWith('/api/dashboard')) {
-        return handleDashboardAPI(req, res);
+  if (req.url.endsWith(".js") || req.url.endsWith(".css")) {
+    try {
+      const filePath = `./public${req.url}`;
+      const content = await readFile(filePath, "utf8");
+      const contentType = req.url.endsWith(".js")
+        ? "application/javascript"
+        : "text/css";
+      res.writeHead(200, { "Content-Type": contentType });
+      res.end(content);
+      return;
+    } catch (err) {
+      res.writeHead(404, { "Content-Type": "text/plain" });
+      res.end("404 Not Found");
+      return;
     }
+  }
   try {
     const requestPath = req.url;
     const pagePath = routes[requestPath];
