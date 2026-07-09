@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { createServer } from "node:http";
+import express from "express";
 
 async function fetchWithTimeout(url, timeoutMs = 5000) {
   const controller = new AbortController();
@@ -35,8 +35,7 @@ function parseQueryParams(url) {
 
 async function handleDashboardAPI(req, res) {
   try {
-    const params = parseQueryParams(req.url);
-    const { lat, lon } = params;
+    const { lat, lon } = req.query;
 
     if (!lat || !lon) {
       res.writeHead(400, { "Content-Type": "application/json" });
@@ -107,12 +106,6 @@ async function handleDashboardAPI(req, res) {
   }
 }
 
-const routes = {
-  "/": "./public/index.html",
-  "/about": "./public/about.html",
-  "/contact-me": "./public/contact-me.html",
-  "/dashboard.js": "./public/dashboard.js",
-};
 
 async function buildPage(pagePath) {
   try {
@@ -125,52 +118,50 @@ async function buildPage(pagePath) {
   }
 }
 
-async function handleRequest(req, res) {
-  if (req.url.startsWith("/api/dashboard")) {
-    return handleDashboardAPI(req, res);
-  }
 
-  if (req.url.endsWith(".js") || req.url.endsWith(".css")) {
-    try {
-      const filePath = `./public${req.url}`;
-      const content = await readFile(filePath, "utf8");
-      const contentType = req.url.endsWith(".js")
-        ? "application/javascript"
-        : "text/css";
-      res.writeHead(200, { "Content-Type": contentType });
-      res.end(content);
-      return;
-    } catch (err) {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("404 Not Found");
-      return;
-    }
-  }
+const app = express();
+
+app.use(express.static('public'));
+
+app.get('/', async (req, res) => {
   try {
-    const requestPath = req.url;
-    const pagePath = routes[requestPath];
-
-    if (!pagePath) {
-      const notFoundHTML = await buildPage("./public/404.html");
-      res.writeHead(404, { "Content-Type": "text/html" });
-      res.end(notFoundHTML);
-      return;
-    }
-
-    const html = await buildPage(pagePath);
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(html);
+    const html = await buildPage('./public/index.html');
+    res.send(html);
   } catch (err) {
-    console.error("Error:", err.message);
-    res.writeHead(500, { "Content-Type": "text/plain" });
-    res.end("500 Server Error");
+    console.log('Error loading home page:', err);
+    res.status(500).send('500 Server Error')
   }
-}
+});
 
-const server = createServer(handleRequest);
+app.get('/about', async (req, res) => {
+  try {
+    const html = await buildPage('./public/about.html');
+    res.send(html);
+  } catch (err) {
+    console.log('Error loading about page:', err);
+    res.status(500).send('500 Server Error')
+  }
+});
+
+app.get('/contact-me', async (req, res) => {
+  try {
+    const html = await buildPage('./public/contact-me.html');
+    res.send(html);
+  } catch (err) {
+    console.log('Error loading contact page:', err);
+    res.status(500).send('500 Server Error')
+  }
+});
+
+app.get('/api/dashboard', handleDashboardAPI);
+
+app.use((req, res) => {
+  res.status(404).send('404 Page Not Found');
+});
+
 const PORT = 8080;
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
-  console.log(`Available routes:`, Object.keys(routes));
-});
+  console.log(`Available routes: [/, /about, /contact-me, /api/dashboard]`);
+})
