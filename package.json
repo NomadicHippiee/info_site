@@ -8,8 +8,11 @@
         "start": "node index.js",
         "dev": "node --watch index.js",
         "debug": "node --inspect-brk=9229 index.js"
-        },
-        "engines": {
-            "node": ">=18.0.0"
-        }
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "express": "^5.2.1"
+    }
 }
